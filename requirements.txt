@@ -1,0 +1,9 @@
+flask
+nltk
+py-thesaurus
+spacy
+textstat
+python-dotenv
+gunicorn
+spacy
+textstat

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Text Humanizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pastel-pink: #FFB6C1;
+            --pastel-blue: #87CEFA;
+            --pastel-purple: #DDA0DD;
+            --soft-white: #FFF5EE;
+            --light-text: #4A4A4A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--soft-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-blue));
+            color: var(--light-text);
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .title {
+            color: var(--pastel-purple);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .title img {
+            width: 50px;
+            height: 50px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            border: 2px solid var(--pastel-pink);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            resize: vertical;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--pastel-purple);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .slider-container {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--pastel-purple);
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--pastel-purple);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .humanize-btn, .copy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-grow: 1;
+            background-color: var(--pastel-purple);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .humanize-btn:hover, .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .humanize-btn svg, .copy-btn svg {
+            stroke: white;
+        }
+
+        .status-message {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--pastel-purple);
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .controls, .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <img src="https://em-content.zobj.net/source/apple/354/cat-face_1f431.png" alt="Cute Cat">
+            <h1>Cute Text Humanizer</h1>
+        </div>
+
+        <textarea id="input-text" placeholder="Enter your text here to make it more human-like..."></textarea>
+
+        <div class="controls">
+            <div class="slider-container">
+                <label for="synonym-rate">Synonym Magic ✨ (0-100%)</label>
+                <input type="range" id="synonym-rate" min="0" max="1" step="0.01" value="0.2">
+            </div>
+            <div class="slider-container">
+                <label for="error-rate">Human Oopsies 🙃 (0-100%)</label>
+                <input type="range" id="error-rate" min="0" max="1" step="0.01" value="0.1">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="humanize-btn" class="humanize-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2">
+                    <path d="M15 4V2" />
+                    <path d="M15 16v-2" />
+                    <path d="M8 9h2" />
+                    <path d="M20 9h2" />
+                    <path d="M12.9 4l-4.5 4.5a2.12 2.12 0 1 1-3-3l4.5-4.5a2.12 2.12 0 1 1 3 3z" />
+                    <path d="M11 13.5l-4.5 4.5a2.12 2.12 0 1 1-3-3l4.5-4.5a2.12 2.12 0 1 1 3 3z" />
+                </svg>
+                Humanize Text
+            </button>
+            <button id="copy-btn" class="copy-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Copy
+            </button>
+        </div>
+
+        <textarea id="result-text" placeholder="Humanized text will appear here..." readonly></textarea>
+
+        <div id="status-message" class="status-message"></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputText = document.getElementById('input-text');
+        const resultText = document.getElementById('result-text');
+        const synonymRateSlider = document.getElementById('synonym-rate');
+        const errorRateSlider = document.getElementById('error-rate');
+        const humanizeBtn = document.getElementById('humanize-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        const cuteMessages = [
+            "Sprinkled some magic ✨",
+            "Transforming text with kawaii power! 🌈",
+            "Making your text super adorable! 🐾",
+            "Text makeover time! 💖",
+            "Bringing human charm to your words! 🌟",
+            "Oopsie-doopsie text magic! 🦄"
+        ];
+
+        function updateSliderDisplay() {
+            synonymRateSlider.setAttribute('data-value', `${Math.round(synonymRateSlider.value * 100)}%`);
+            errorRateSlider.setAttribute('data-value', `${Math.round(errorRateSlider.value * 100)}%`);
+        }
+
+        synonymRateSlider.addEventListener('input', updateSliderDisplay);
+        errorRateSlider.addEventListener('input', updateSliderDisplay);
+        updateSliderDisplay();
+
+        humanizeBtn.addEventListener('click', async () => {
+            const text = inputText.value.trim();
+            if (!text) {
+                statusMessage.textContent = "Oopsie! Please add some text to humanize 🐱";
+                statusMessage.style.color = 'var(--pastel-pink)';
+                return;
+            }
+
+            const synonymRate = parseFloat(synonymRateSlider.value);
+            const errorRate = parseFloat(errorRateSlider.value);
+
+            try {
+                statusMessage.textContent = "Humanizing in progress...";
+                statusMessage.style.color = 'var(--pastel-purple)';
+
+                // Simulate server-side humanization (you'll replace this with actual server call)
+                const humanizedText = simulateHumanization(text, synonymRate, errorRate);
+                
+                resultText.value = humanizedText;
+                
+                statusMessage.textContent = cuteMessages[Math.floor(Math.random() * cuteMessages.length)];
+                statusMessage.style.color = 'var(--pastel-purple)';
+            } catch (error) {
+                console.error('Humanization error:', error);
+                statusMessage.textContent = "Oops! Something went wrong 😿";
+                statusMessage.style.color = 'var(--pastel-pink)';
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = resultText.value;
+            
+            if (!textToCopy) {
+                statusMessage.textContent = "Nothing to copy! 🙀";
+                statusMessage.style.color = 'var(--pastel-pink)';
+                return;
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                statusMessage.textContent = "Copied to clipboard! 📋";
+                statusMessage.style.color = 'var(--pastel-purple)';
+                
+                setTimeout(() => {
+                    statusMessage.textContent = "";
+                }, 2000);
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                statusMessage.textContent = "Copy failed 😿";
+                statusMessage.style.color = 'var(--pastel-pink)';
+            });
+        });
+
+        // Simulate humanization (replace with actual implementation)
+        function simulateHumanization(text, synonymRate, errorRate) {
+            // Simple humanization simulation
+            const words = text.split(/\s+/);
+            const humanizedWords = words.map(word => {
+                // Simulate synonym replacement
+                if (Math.random() < synonymRate) {
+                    const synonyms = ['awesome', 'cool', 'great', 'wonderful', 'amazing'];
+                    return synonyms[Math.floor(Math.random() * synonyms.length)];
+                }
+                
+                // Simulate error introduction
+                if (Math.random() < errorRate) {
+                    const errorTypes = [
+                        w => w + '...',
+                        w => w.split('').sort(() => Math.random() - 0.5).join(''),
+                        w => '!' + w,
+                        w => w + '?'
+                    ];
+                    return errorTypes[Math.floor(Math.random() * errorTypes.length)](word);
+                }
+                
+                return word;
+            });
+
+            return humanizedWords.join(' ');
+        }
+    });
+    </script>
+</body>
+</html>
